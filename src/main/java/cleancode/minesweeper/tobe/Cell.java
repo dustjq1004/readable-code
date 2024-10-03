@@ -42,7 +42,7 @@ public class Cell {
         this.isFlagged = true;
     }
 
-    public void open() {
+    public void openSurroundedCell() {
         isOpened = true;
     }
 
