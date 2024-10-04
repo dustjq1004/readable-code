@@ -1,36 +1,24 @@
 package cleancode.minesweeper.tobe.cell;
 
-public abstract class Cell {
+public interface Cell {
 
-    protected static final String FLAG_SIGN = "⚑";
-    protected static final String UNCHECKED_SIGN = "□";
-
-    protected boolean isFlagged;
-    protected boolean isOpened;
+    String FLAG_SIGN = "⚑";
+    String UNCHECKED_SIGN = "□";
 
     // Cell이 가진 속성 : 근처 지뢰 숫자, 지뢰 여부
     // Cell의 상태 : 깃발 유무, 열렸다/닫혔다. 사용자가 확인
 
-    public abstract boolean hasLandMineCount();
+    boolean hasLandMineCount();
 
-    public abstract String getSign();
+    String getSign();
 
-    public abstract boolean isLandMine();
+    boolean isLandMine();
 
-    public void flag() {
-        this.isFlagged = true;
-    }
+    void flag();
 
-    public void open() {
-        isOpened = true;
-    }
+    void open();
 
-    public boolean isChecked() {
-        return isFlagged || isOpened;
-    }
+    boolean isChecked();
 
-
-    public boolean isOpened() {
-        return isOpened;
-    }
+    boolean isOpened();
 }
