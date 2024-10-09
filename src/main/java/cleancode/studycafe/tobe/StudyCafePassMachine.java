@@ -54,6 +54,10 @@ public class StudyCafePassMachine {
         outputHandler.askLockerPass(selectedLockerPass);
         boolean lockerSelection = inputHandler.getLockerSelection();
 
-        return selectedLockerPass;
+        if (lockerSelection) {
+            return selectedLockerPass;
+        }
+
+        return null;
     }
 }
