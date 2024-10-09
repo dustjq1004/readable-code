@@ -35,14 +35,4 @@ public class MenuBoard {
                 .findFirst()
                 .orElse(null);
     }
-
-    public StudyCafeLockerPass getSelectedLockerPass(StudyCafePass selectedPass, boolean lockerSelection) {
-        return lockerPasses.stream()
-                .filter(option -> lockerSelection &&
-                        option.getPassType() == selectedPass.getPassType()
-                                && option.getDuration() == selectedPass.getDuration()
-                )
-                .findFirst()
-                .orElse(null);
-    }
 }

@@ -1,9 +1,7 @@
 package cleancode.studycafe.tobe;
 
 import cleancode.studycafe.tobe.exception.AppException;
-import cleancode.studycafe.tobe.io.InputHandler;
-import cleancode.studycafe.tobe.io.OutputHandler;
-import cleancode.studycafe.tobe.io.StudyCafeFileHandler;
+import cleancode.studycafe.tobe.io.*;
 import cleancode.studycafe.tobe.model.MenuBoard;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
 import cleancode.studycafe.tobe.model.StudyCafePass;
@@ -13,10 +11,14 @@ import java.util.List;
 
 public class StudyCafePassMachine {
 
-    private final InputHandler inputHandler = new InputHandler();
-    private final OutputHandler outputHandler = new OutputHandler();
+    private final InputHandler consoleInputHandler;
+    private final OutputHandler consoleOutputHandler;
     private MenuBoard menuBoard;
 
+    public StudyCafePassMachine(InputHandler consoleInputHandler, OutputHandler consoleOutputHandler) {
+        this.consoleInputHandler = consoleInputHandler;
+        this.consoleOutputHandler = consoleOutputHandler;
+    }
 
     public void initialize() {
         menuBoard = MenuBoard.from(new StudyCafeFileHandler());
@@ -24,35 +26,34 @@ public class StudyCafePassMachine {
 
     public void run() {
         try {
-            outputHandler.showWelcomeMessage();
-            outputHandler.showAnnouncement();
+            consoleOutputHandler.showWelcomeMessage();
+            consoleOutputHandler.showAnnouncement();
 
-            outputHandler.askPassTypeSelection();
-            StudyCafePassType studyCafePassType = inputHandler.getPassTypeSelectingUserAction();
+            consoleOutputHandler.askPassTypeSelection();
+            StudyCafePassType studyCafePassType = consoleInputHandler.getPassTypeSelectingUserAction();
 
             List<StudyCafePass> studyCafePasses = menuBoard.getStudyCafePasses(studyCafePassType);
-            outputHandler.showPassListForSelection(studyCafePasses);
+            consoleOutputHandler.showPassListForSelection(studyCafePasses);
 
-            StudyCafePass selectedPass = inputHandler.getSelectPass(studyCafePasses);
+            StudyCafePass selectedPass = consoleInputHandler.getSelectPass(studyCafePasses);
             StudyCafeLockerPass selectedLockerPass = getSelectedLockerPassBy(studyCafePassType, selectedPass);
 
-            outputHandler.showPassOrderSummary(selectedPass, selectedLockerPass);
-
+            consoleOutputHandler.showPassOrderSummary(selectedPass, selectedLockerPass);
         } catch (AppException e) {
-            outputHandler.showSimpleMessage(e.getMessage());
+            consoleOutputHandler.showSimpleMessage(e.getMessage());
         } catch (Exception e) {
-            outputHandler.showSimpleMessage("알 수 없는 오류가 발생했습니다.");
+            consoleOutputHandler.showSimpleMessage("알 수 없는 오류가 발생했습니다.");
         }
     }
 
     private StudyCafeLockerPass getSelectedLockerPassBy(StudyCafePassType studyCafePassType, StudyCafePass selectedPass) {
-        if (studyCafePassType != StudyCafePassType.FIXED) {
+        if (studyCafePassType.isNotLockerPassType()) {
             return null;
         }
 
         StudyCafeLockerPass selectedLockerPass = menuBoard.getLockerPass(selectedPass);
-        outputHandler.askLockerPass(selectedLockerPass);
-        boolean lockerSelection = inputHandler.getLockerSelection();
+        consoleOutputHandler.askLockerPass(selectedLockerPass);
+        boolean lockerSelection = consoleInputHandler.getLockerSelection();
 
         if (lockerSelection) {
             return selectedLockerPass;
