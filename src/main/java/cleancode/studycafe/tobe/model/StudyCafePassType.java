@@ -12,7 +12,4 @@ public enum StudyCafePassType {
         this.description = description;
     }
 
-    public boolean isNotLockerPassType() {
-        return this != FIXED;
-    }
 }

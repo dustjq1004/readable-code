@@ -36,7 +36,7 @@ public class StudyCafePassMachine {
             consoleOutputHandler.showPassListForSelection(studyCafePasses);
 
             StudyCafePass selectedPass = consoleInputHandler.getSelectPass(studyCafePasses);
-            StudyCafeLockerPass selectedLockerPass = getSelectedLockerPassBy(studyCafePassType, selectedPass);
+            StudyCafeLockerPass selectedLockerPass = getSelectedLockerPassBy(selectedPass);
 
             consoleOutputHandler.showPassOrderSummary(selectedPass, selectedLockerPass);
         } catch (AppException e) {
@@ -46,8 +46,8 @@ public class StudyCafePassMachine {
         }
     }
 
-    private StudyCafeLockerPass getSelectedLockerPassBy(StudyCafePassType studyCafePassType, StudyCafePass selectedPass) {
-        if (studyCafePassType.isNotLockerPassType()) {
+    private StudyCafeLockerPass getSelectedLockerPassBy(StudyCafePass selectedPass) {
+        if (selectedPass.isNotLockerPassType()) {
             return null;
         }
 
